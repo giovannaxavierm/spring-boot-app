@@ -7,8 +7,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import br.gov.sp.fatec.springbootapp.entity.Autorizacao;
+import br.gov.sp.fatec.springbootapp.entity.Livro;
 import br.gov.sp.fatec.springbootapp.entity.Usuario;
 import br.gov.sp.fatec.springbootapp.repository.AutorizacaoRepository;
+import br.gov.sp.fatec.springbootapp.repository.LivroRepository;
 import br.gov.sp.fatec.springbootapp.repository.UsuarioRepository;
 
 @Service("SegurancaService")
@@ -19,6 +21,9 @@ public class SegurancaServiceImpl implements SegurancaService {
 
     @Autowired
     private UsuarioRepository usuarioRepo;
+
+    @Autowired
+    private LivroRepository livroRepo;
 
     @Transactional
     @Override
@@ -36,6 +41,15 @@ public class SegurancaServiceImpl implements SegurancaService {
         usuario.getAutorizacoes().add(aut);
         usuarioRepo.save(usuario);
         return usuario;
+    }
+
+    @Override
+    public Livro criaLivro(String nome, String autor) {
+        Livro livro = new Livro();
+        livro.setNome(nome);
+        livro.setAutor(autor);
+        livroRepo.save(livro);
+        return livro;
     }
     
 }

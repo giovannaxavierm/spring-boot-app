@@ -14,7 +14,7 @@ public interface LivroRepository extends JpaRepository<Livro, Long> {
     public Livro findByNome(String nome);
 
     @Query("select l from Livro l where l.nome = ?1")
-    public Livro buscaUsuarioPorNome(String nome);
+    public Livro buscaLivroPorNome(String nome);
 
     public Livro findByNomeAndAutor(String nome, String autor);
 

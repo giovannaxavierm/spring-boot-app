@@ -153,7 +153,7 @@ class SpringBootAppApplicationTests {
 
         @Test
         void testaBuscaLivroQuery(){
-        Livro livro = livroRepo.buscaUsuarioPorNome("Harry Potter e o Prisioneiro de Azkaban");
+        Livro livro = livroRepo.buscaLivroPorNome("Harry Potter e o Prisioneiro de Azkaban");
         assertNotNull(livro);
     }
 

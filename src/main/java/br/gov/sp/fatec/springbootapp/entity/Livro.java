@@ -1,5 +1,6 @@
 package br.gov.sp.fatec.springbootapp.entity;
 
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -21,28 +22,29 @@ public class Livro {
     @Column(name = "liv_autor")
     private String autor;
 
-    public Long getId(){
+    public Long getId() {
         return this.id;
     }
 
-    public void setId(Long id){
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public String getNome(){
+    public String getNome() {
         return this.nome;
     }
 
-    public void setNome(String nome){
+    public void setNome(String nome) {
         this.nome = nome;
     }
 
-    public String getAutor(){
+    public String getAutor() {
         return this.autor;
     }
 
-    public void setAutor(String autor){
+    public void setAutor(String autor) {
         this.autor = autor;
     }
+
 
 }
