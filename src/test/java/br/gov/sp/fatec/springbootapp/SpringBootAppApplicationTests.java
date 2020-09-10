@@ -13,9 +13,11 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
 import br.gov.sp.fatec.springbootapp.repository.AutorizacaoRepository;
+import br.gov.sp.fatec.springbootapp.repository.LivroRepository;
 import br.gov.sp.fatec.springbootapp.repository.UsuarioRepository;
 import br.gov.sp.fatec.springbootapp.service.SegurancaService;
 import br.gov.sp.fatec.springbootapp.entity.Autorizacao;
+import br.gov.sp.fatec.springbootapp.entity.Livro;
 import br.gov.sp.fatec.springbootapp.entity.Usuario;
 
 @SpringBootTest
@@ -31,6 +33,9 @@ class SpringBootAppApplicationTests {
 
     @Autowired
     private SegurancaService segService;
+
+    @Autowired
+    private LivroRepository livroRepo;
 
 	@Test
 	void contextLoads() {
@@ -63,6 +68,15 @@ class SpringBootAppApplicationTests {
         autRepo.save(aut);
         assertNotNull(aut.getUsuarios().iterator().next().getId());
     } 
+
+    @Test
+    void testaInsercaoLivro(){
+        Livro livro = new Livro();
+        livro.setNome("Cidade dos Ossos");
+        livro.setAutor("Cassanda Clare");
+        livroRepo.save(livro);
+        assertNotNull(livro.getId());
+    }
 
     @Test
     void testaAutorizacao(){
@@ -123,6 +137,42 @@ class SpringBootAppApplicationTests {
     void testaServicoCriaUsuario(){
         Usuario usuario = segService.criaUsuario("normal", "senha123", "ROLE_USUARIO");
         assertNotNull(usuario);
+    }
+
+    @Test
+        void testaBuscaLivroNomeContains(){
+        List<Livro> livros = livroRepo.findByNomeContainsIgnoreCase("H");
+        assertFalse(livros.isEmpty());
+    }
+
+     @Test
+        void testaBuscaLivro(){
+        Livro livro = livroRepo.findByNome("Harry Potter e o Prisioneiro de Azkaban");
+        assertNotNull(livro);
+    }
+
+        @Test
+        void testaBuscaLivroQuery(){
+        Livro livro = livroRepo.buscaUsuarioPorNome("Harry Potter e o Prisioneiro de Azkaban");
+        assertNotNull(livro);
+    }
+
+    @Test
+        void testaBuscaLivroNomeAutor(){
+        Livro livro = livroRepo.findByNomeAndAutor("Harry Potter e o Prisioneiro de Azkaban","J.K Rowling");
+        assertNotNull(livro);
+    }
+
+    @Test
+        void testaBuscaLivroNomeAutorQuery(){
+        Livro livro = livroRepo.buscaLivroPorNomeeAutor("Harry Potter e o Prisioneiro de Azkaban","J.K Rowling");
+        assertNotNull(livro);
+    }
+
+    @Test
+    void testaServicoCriaLivro(){
+        Livro livro = segService.criaLivro("Sol da Meia Noite", "Stephenie Meyer");
+        assertNotNull(livro);
     }
 
 }
