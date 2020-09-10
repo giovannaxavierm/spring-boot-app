@@ -39,12 +39,16 @@ create table liv_livro (
 create table com_comentario (
   com_id bigint unsigned not null auto_increment,
   com_comentario varchar(100) not null,
-  liv_id bigint unsigned not null,
-  primary key (com_id),
-  foreign key cml_livro_fk (liv_id) references liv_livro (liv_id) on delete restrict on update cascade
+  primary key (com_id)
 );
 
-
+create table cml_comentario_livro (
+  liv_id bigint unsigned not null,
+  com_id bigint unsigned not null,
+  primary key (liv_id, com_id),
+  foreign key cml_livro_fk (liv_id) references liv_livro (liv_id) on delete restrict on update cascade,
+  foreign key cml_comentario_fk (com_id) references com_comentario (com_id) on delete restrict on update cascade
+);
 
 create table cmu_comentario_usuario (
   usr_id bigint unsigned not null,
@@ -61,7 +65,9 @@ insert into aut_autorizacao (aut_nome)
 insert into uau_usuario_autorizacao (1, 1);
 insert into liv_livro (liv_nome, liv_autor)
     values ('Harry Potter e o Prisioneiro de Azkaban', 'J.K Rowling');
-insert into com_comentario(com_comentario,liv_id)
-    values ('Emocionante. Melhor livro da saga.','1');
+insert into com_comentario(com_comentario)
+    values ('Emocionante. Melhor livro da saga.');
 insert into cmu_comentario_usuario(usr_id,com_id)
+    values ('1','1');
+insert into cml_comentario_livro(liv_id,com_id)
     values ('1','1');

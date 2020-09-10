@@ -111,13 +111,13 @@ class SpringBootAppApplicationTests {
 
     @Test
         void testaBuscaUsuarioNomeSenha(){
-        Usuario usuario = usuarioRepo.findByNomeAndSenha("Luna","lovegood");
+        Usuario usuario = usuarioRepo.findByNomeAndSenha("Luna","Senha");
         assertNotNull(usuario);
     }
 
     @Test
         void testaBuscaUsuarioNomeSenhaQuery(){
-        Usuario usuario = usuarioRepo.buscaUsuarioPorNomeESenha("Luna","lovegood");
+        Usuario usuario = usuarioRepo.buscaUsuarioPorNomeESenha("Luna","Senha");
         assertNotNull(usuario);
     }
 
