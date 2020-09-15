@@ -25,8 +25,8 @@ public class Livro {
     @Column(name = "liv_autor")
     private String autor;
 
-    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "comentarios")
-    private Set<Comentario> comentarios;
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "comentario")
+    private Set<Comentario> comentario;
 
     public Long getId() {
         return this.id;
@@ -52,12 +52,12 @@ public class Livro {
         this.autor = autor;
     }
 
-    public Set<Comentario> getComentario(){
-        return this.comentarios;
+    public Set<Comentario> getComentarios(){
+        return this.comentario;
     }
 
-    public void setComentarios(Set<Comentario> comentarios){
-        this.comentarios = comentarios;
+    public void setComentarios(Set<Comentario> comentario){
+        this.comentario = comentario;
     }
 
 }
