@@ -13,10 +13,12 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
 import br.gov.sp.fatec.springbootapp.repository.AutorizacaoRepository;
+import br.gov.sp.fatec.springbootapp.repository.ComentarioRepository;
 import br.gov.sp.fatec.springbootapp.repository.LivroRepository;
 import br.gov.sp.fatec.springbootapp.repository.UsuarioRepository;
 import br.gov.sp.fatec.springbootapp.service.SegurancaService;
 import br.gov.sp.fatec.springbootapp.entity.Autorizacao;
+import br.gov.sp.fatec.springbootapp.entity.Comentario;
 import br.gov.sp.fatec.springbootapp.entity.Livro;
 import br.gov.sp.fatec.springbootapp.entity.Usuario;
 
@@ -36,6 +38,9 @@ class SpringBootAppApplicationTests {
 
     @Autowired
     private LivroRepository livroRepo;
+
+    @Autowired
+    private ComentarioRepository comRepo;
 
 	@Test
 	void contextLoads() {
@@ -77,7 +82,23 @@ class SpringBootAppApplicationTests {
         livroRepo.save(livro);
         assertNotNull(livro.getId());
     }
-
+    @Test
+    void testaInsercaoComentario(){
+        Usuario usuario = new Usuario();
+        usuario.setNome("Jack");
+        usuario.setSenha("pearson");
+        usuarioRepo.save(usuario);
+        Livro livro = new Livro();
+        livro.setNome("Cidade dos Ossos");
+        livro.setAutor("Cassandra Clare");
+        livroRepo.save(livro);
+        Comentario com = new Comentario(); 
+        com.setComentario("Adorável");
+        com.setLivros(new HashSet<Livro>());
+        com.getLivros().add(livro);
+        comRepo.save(com);
+        assertNotNull(com.getLivros().iterator().next().getId());
+    } 
     @Test
     void testaAutorizacao(){
         Usuario usuario = usuarioRepo.findById(1L).get();

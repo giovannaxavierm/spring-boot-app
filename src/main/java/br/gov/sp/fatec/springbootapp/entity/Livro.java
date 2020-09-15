@@ -1,11 +1,14 @@
 package br.gov.sp.fatec.springbootapp.entity;
 
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -21,6 +24,9 @@ public class Livro {
 
     @Column(name = "liv_autor")
     private String autor;
+
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "comentarios")
+    private Set<Comentario> comentarios;
 
     public Long getId() {
         return this.id;
@@ -46,5 +52,12 @@ public class Livro {
         this.autor = autor;
     }
 
+    public Set<Comentario> getComentario(){
+        return this.comentarios;
+    }
+
+    public void setComentarios(Set<Comentario> comentarios){
+        this.comentarios = comentarios;
+    }
 
 }
