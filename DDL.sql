@@ -56,7 +56,8 @@ insert into usr_usuario (usr_nome, usr_senha)
     values('Luna', 'Senha');
 insert into aut_autorizacao (aut_nome)
     values('ROLE_ADMIN');
-insert into uau_usuario_autorizacao (1, 1);
+insert into uau_usuario_autorizacao
+    values (1, 1);
 insert into liv_livro (liv_nome, liv_autor)
     values ('Harry Potter e o Prisioneiro de Azkaban', 'J.K Rowling');
 insert into com_comentario(com_comentario, usr_id)

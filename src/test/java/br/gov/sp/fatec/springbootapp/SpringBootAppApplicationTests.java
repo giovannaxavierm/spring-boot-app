@@ -96,8 +96,10 @@ class SpringBootAppApplicationTests {
         com.setComentario("Adorável");
         com.setLivros(new HashSet<Livro>());
         com.getLivros().add(livro);
+        com.setUsuario(usuario);
         comRepo.save(com);
         assertNotNull(com.getLivros().iterator().next().getId());
+        assertNotNull(com.getUsuario().getId());
     } 
     @Test
     void testaAutorizacao(){
@@ -196,4 +198,26 @@ class SpringBootAppApplicationTests {
         assertNotNull(livro);
     }
 
+     @Test
+        void buscaPorUsuario(){
+        List<Comentario> comentarios = comRepo.buscaPorUsuario("Luna");
+        assertFalse(comentarios.isEmpty());
+    }
+    @Test
+        void buscaPorLivro(){
+        List<Comentario> comentarios = comRepo.buscaPorLivro("Harry Potter e o Prisioneiro de Azkaban");
+        assertFalse(comentarios.isEmpty());
+    }
+
+    @Test
+        void buscaPorAutor(){
+        List<Comentario> comentarios = comRepo.buscaPorAutor("J.K Rowling");
+        assertFalse(comentarios.isEmpty());
+    }
+
+    @Test
+    void testaServicoCriaComentario(){
+        Comentario comentario = segService.criaComentario("Jack pearson","Big Three", "Percy Jackson","Rick Riordan", "Muito ruim");
+        assertNotNull(comentario);
+    }
 }
