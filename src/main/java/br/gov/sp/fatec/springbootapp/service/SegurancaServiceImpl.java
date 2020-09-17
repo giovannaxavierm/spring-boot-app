@@ -57,8 +57,7 @@ public class SegurancaServiceImpl implements SegurancaService {
         livroRepo.save(livro);
         return livro;
     }
-    
-     @Transactional
+   @Transactional
      @Override
      public Comentario criaComentario(String usuario, String senha, String livro, String autor, String comentario) {
         Usuario usu = usuarioRepo.findByNome(usuario);
