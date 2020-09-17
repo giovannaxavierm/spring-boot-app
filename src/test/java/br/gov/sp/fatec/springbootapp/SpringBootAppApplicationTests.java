@@ -218,6 +218,6 @@ class SpringBootAppApplicationTests {
     @Test
     void testaServicoCriaComentario(){
         Comentario comentario = segService.criaComentario("Jack pearson","Big Three", "Percy Jackson","Rick Riordan", "Muito ruim");
-        assertNotNull(comentario);
+        assertNotNull(comentario.getId());
     }
 }

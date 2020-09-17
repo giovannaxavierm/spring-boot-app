@@ -48,6 +48,7 @@ public class SegurancaServiceImpl implements SegurancaService {
         return usuario;
     }
 
+    @Transactional
     @Override
     public Livro criaLivro(String nome, String autor) {
         Livro livro = new Livro();
@@ -57,6 +58,7 @@ public class SegurancaServiceImpl implements SegurancaService {
         return livro;
     }
     
+     @Transactional
      @Override
      public Comentario criaComentario(String usuario, String senha, String livro, String autor, String comentario) {
         Usuario usu = usuarioRepo.findByNome(usuario);
