@@ -214,7 +214,7 @@ class SpringBootAppApplicationTests {
         List<Comentario> comentarios = comRepo.buscaPorAutor("J.K Rowling");
         assertNotNull(comentarios);
     }
-
+    @Transactional
     @Test
     void testaServicoCriaComentario(){
         Comentario comentario = segService.criaComentario("Jack pearson","Big Three", "Percy Jackson","Rick Riordan", "Muito ruim");
