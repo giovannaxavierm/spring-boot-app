@@ -1,6 +1,8 @@
 package br.gov.sp.fatec.springbootapp.service;
 
 import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -46,6 +48,56 @@ public class SegurancaServiceImpl implements SegurancaService {
         usuario.getAutorizacoes().add(aut);
         usuarioRepo.save(usuario);
         return usuario;
+    }
+
+    @Override
+    public List<Usuario> buscarTodosUsuarios(){
+        return usuarioRepo.findAll();
+
+    }
+
+    @Override
+    public List<Livro> buscarTodosLivros(){
+        return livroRepo.findAll();
+    }
+
+    @Override
+    public Usuario buscarUsuarioPorId(Long id){
+        Optional<Usuario> usuarioOp = usuarioRepo.findById(id);
+        if(usuarioOp.isPresent()){
+            return usuarioOp.get();
+
+        }
+        throw new RuntimeException("Usuario não encontrado!");
+    }
+
+     @Override
+    public Livro buscarLivroPorId(Long id){
+        Optional<Livro> livroOp = livroRepo.findById(id);
+        if(livroOp.isPresent()){
+            return livroOp.get();
+
+        }
+        throw new RuntimeException("Usuario não encontrado!");
+    }
+
+    @Override
+    public Usuario buscarUsuarioPorNome(String nome){
+        Usuario usuario = usuarioRepo.findByNome(nome);
+        if(usuario!=null){
+            return usuario;
+        }
+        throw new RuntimeException("Usuario não encontrado!");
+    }
+
+      @Override
+    public Livro buscarLivroPorNome(String nome){
+        Livro livro = livroRepo.findByNome(nome);
+        if(livro!=null){
+            return livro;
+
+        }
+        throw new RuntimeException("Usuario não encontrado!");
     }
 
     @Transactional

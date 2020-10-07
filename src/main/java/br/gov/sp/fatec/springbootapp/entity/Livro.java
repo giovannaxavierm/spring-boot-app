@@ -11,6 +11,8 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "liv_livro")
 public class Livro {
@@ -26,6 +28,7 @@ public class Livro {
     private String autor;
 
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "livros")
+    @JsonIgnore
     private Set<Comentario> comentario;
 
     public Long getId() {
