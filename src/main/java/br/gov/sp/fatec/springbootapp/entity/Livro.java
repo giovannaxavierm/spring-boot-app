@@ -25,7 +25,7 @@ public class Livro {
     @Column(name = "liv_autor")
     private String autor;
 
-    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "comentario")
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "livros")
     private Set<Comentario> comentario;
 
     public Long getId() {
