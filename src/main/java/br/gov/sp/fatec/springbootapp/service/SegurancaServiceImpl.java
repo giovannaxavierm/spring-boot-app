@@ -12,6 +12,7 @@ import br.gov.sp.fatec.springbootapp.entity.Autorizacao;
 import br.gov.sp.fatec.springbootapp.entity.Comentario;
 import br.gov.sp.fatec.springbootapp.entity.Livro;
 import br.gov.sp.fatec.springbootapp.entity.Usuario;
+import br.gov.sp.fatec.springbootapp.exception.RegistroNaoEncontradoException;
 import br.gov.sp.fatec.springbootapp.repository.AutorizacaoRepository;
 import br.gov.sp.fatec.springbootapp.repository.ComentarioRepository;
 import br.gov.sp.fatec.springbootapp.repository.LivroRepository;
@@ -68,7 +69,7 @@ public class SegurancaServiceImpl implements SegurancaService {
             return usuarioOp.get();
 
         }
-        throw new RuntimeException("Usuario não encontrado!");
+        throw new RegistroNaoEncontradoException("Usuario não encontrado!");
     }
 
      @Override
@@ -78,7 +79,7 @@ public class SegurancaServiceImpl implements SegurancaService {
             return livroOp.get();
 
         }
-        throw new RuntimeException("Usuario não encontrado!");
+        throw new RegistroNaoEncontradoException("Livro não encontrado!");
     }
 
     @Override
@@ -87,7 +88,7 @@ public class SegurancaServiceImpl implements SegurancaService {
         if(usuario!=null){
             return usuario;
         }
-        throw new RuntimeException("Usuario não encontrado!");
+        throw new RegistroNaoEncontradoException("Usuario não encontrado!");
     }
 
       @Override
@@ -97,7 +98,7 @@ public class SegurancaServiceImpl implements SegurancaService {
             return livro;
 
         }
-        throw new RuntimeException("Usuario não encontrado!");
+        throw new RegistroNaoEncontradoException("Livro não encontrado!");
     }
 
     @Transactional
@@ -141,7 +142,7 @@ public class SegurancaServiceImpl implements SegurancaService {
          if(autorizacao!=null){
             return autorizacao;
         }
-        throw new RuntimeException("Autorizacao não encontrada!");
+        throw new RegistroNaoEncontradoException("Autorizacao não encontrada!");
     }
 
 }

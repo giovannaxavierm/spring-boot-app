@@ -12,6 +12,9 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonView;
+
+import br.gov.sp.fatec.springbootapp.controller.View;
 
 @Entity
 @Table(name = "liv_livro")
@@ -21,9 +24,11 @@ public class Livro {
     @Column(name = "liv_id")
     private Long id;
 
+    @JsonView(View.LivroResumo.class)
     @Column(name = "liv_nome")
     private String nome;
 
+    @JsonView(View.LivroResumo.class)
     @Column(name = "liv_autor")
     private String autor;
 
