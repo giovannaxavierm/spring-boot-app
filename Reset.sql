@@ -1,3 +1,6 @@
+drop user 'user'@'localhost';
+drop schema springDB;
+
 create schema springDB;
 
 use springDB;

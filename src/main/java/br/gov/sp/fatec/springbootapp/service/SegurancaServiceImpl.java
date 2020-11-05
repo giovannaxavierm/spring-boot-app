@@ -13,6 +13,8 @@ import br.gov.sp.fatec.springbootapp.entity.Comentario;
 import br.gov.sp.fatec.springbootapp.entity.Livro;
 import br.gov.sp.fatec.springbootapp.entity.Usuario;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
 import br.gov.sp.fatec.springbootapp.exception.RegistroNaoEncontradoException;
 import br.gov.sp.fatec.springbootapp.repository.AutorizacaoRepository;
 import br.gov.sp.fatec.springbootapp.repository.ComentarioRepository;
@@ -34,6 +36,9 @@ public class SegurancaServiceImpl implements SegurancaService {
     @Autowired
     private ComentarioRepository comRepo;
 
+    @Autowired
+    private PasswordEncoder passEncoder;
+
     @Transactional
     @Override
     public Usuario criaUsuario(String nome, String senha, String autorizacao) {
@@ -45,7 +50,7 @@ public class SegurancaServiceImpl implements SegurancaService {
         }
         Usuario usuario = new Usuario();
         usuario.setNome(nome);
-        usuario.setSenha(senha);
+        usuario.setSenha(passEncoder.encode(senha));
         usuario.setAutorizacoes(new HashSet<Autorizacao>());
         usuario.getAutorizacoes().add(aut);
         usuarioRepo.save(usuario);
@@ -60,6 +65,7 @@ public class SegurancaServiceImpl implements SegurancaService {
     }
 
     @Override
+    @PreAuthorize("isAuthenticated()")
     public List<Livro> buscarTodosLivros(){
         return livroRepo.findAll();
     }
