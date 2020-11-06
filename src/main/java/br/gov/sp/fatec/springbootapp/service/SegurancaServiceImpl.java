@@ -3,8 +3,14 @@ package br.gov.sp.fatec.springbootapp.service;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -12,9 +18,6 @@ import br.gov.sp.fatec.springbootapp.entity.Autorizacao;
 import br.gov.sp.fatec.springbootapp.entity.Comentario;
 import br.gov.sp.fatec.springbootapp.entity.Livro;
 import br.gov.sp.fatec.springbootapp.entity.Usuario;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.crypto.password.PasswordEncoder;
-
 import br.gov.sp.fatec.springbootapp.exception.RegistroNaoEncontradoException;
 import br.gov.sp.fatec.springbootapp.repository.AutorizacaoRepository;
 import br.gov.sp.fatec.springbootapp.repository.ComentarioRepository;
@@ -43,7 +46,7 @@ public class SegurancaServiceImpl implements SegurancaService {
     @Override
     public Usuario criaUsuario(String nome, String senha, String autorizacao) {
         Autorizacao aut = autRepo.findByNome(autorizacao);
-        if(aut == null){
+        if (aut == null) {
             aut = new Autorizacao();
             aut.setNome(autorizacao);
             autRepo.save(aut);
@@ -58,32 +61,34 @@ public class SegurancaServiceImpl implements SegurancaService {
     }
 
     @Override
-    @PreAuthorize("isAuthenticated()")
-    public List<Usuario> buscarTodosUsuarios(){
+    @PreAuthorize("hasRole('ADMIN')")
+    public List<Usuario> buscarTodosUsuarios() {
         return usuarioRepo.findAll();
 
     }
 
     @Override
     @PreAuthorize("isAuthenticated()")
-    public List<Livro> buscarTodosLivros(){
+    public List<Livro> buscarTodosLivros() {
         return livroRepo.findAll();
     }
 
     @Override
-    public Usuario buscarUsuarioPorId(Long id){
+    @PreAuthorize("hasAnyRole('ADMIN','USUARIO')")
+    public Usuario buscarUsuarioPorId(Long id) {
         Optional<Usuario> usuarioOp = usuarioRepo.findById(id);
-        if(usuarioOp.isPresent()){
+        if (usuarioOp.isPresent()) {
             return usuarioOp.get();
 
         }
         throw new RegistroNaoEncontradoException("Usuario não encontrado!");
     }
 
-     @Override
-    public Livro buscarLivroPorId(Long id){
+    @Override
+    @PreAuthorize("isAuthenticated()")
+    public Livro buscarLivroPorId(Long id) {
         Optional<Livro> livroOp = livroRepo.findById(id);
-        if(livroOp.isPresent()){
+        if (livroOp.isPresent()) {
             return livroOp.get();
 
         }
@@ -91,18 +96,20 @@ public class SegurancaServiceImpl implements SegurancaService {
     }
 
     @Override
-    public Usuario buscarUsuarioPorNome(String nome){
+    @PreAuthorize("isAuthenticated()")
+    public Usuario buscarUsuarioPorNome(String nome) {
         Usuario usuario = usuarioRepo.findByNome(nome);
-        if(usuario!=null){
+        if (usuario != null) {
             return usuario;
         }
         throw new RegistroNaoEncontradoException("Usuario não encontrado!");
     }
 
-      @Override
-    public Livro buscarLivroPorNome(String nome){
+    @Override
+    @PreAuthorize("isAuthenticated()")
+    public Livro buscarLivroPorNome(String nome) {
         Livro livro = livroRepo.findByNome(nome);
-        if(livro!=null){
+        if (livro != null) {
             return livro;
 
         }
@@ -118,18 +125,20 @@ public class SegurancaServiceImpl implements SegurancaService {
         livroRepo.save(livro);
         return livro;
     }
-   @Transactional
-     @Override
-     public Comentario criaComentario(String usuario, String senha, String livro, String autor, String comentario) {
+
+    @Transactional
+    @Override
+    @PreAuthorize("isAuthenticated()")
+    public Comentario criaComentario(String usuario, String senha, String livro, String autor, String comentario) {
         Usuario usu = usuarioRepo.findByNome(usuario);
-        if(usu == null){
+        if (usu == null) {
             usu = new Usuario();
             usu.setNome(usuario);
             usu.setSenha(senha);
             usuarioRepo.save(usu);
         }
         Livro liv = livroRepo.findByNome(livro);
-        if(liv == null){
+        if (liv == null) {
             liv = new Livro();
             liv.setNome(livro);
             liv.setAutor(autor);
@@ -145,12 +154,26 @@ public class SegurancaServiceImpl implements SegurancaService {
     }
 
     @Override
-    public Autorizacao buscarAutorizacaoPorNome(String nome){
+    @PreAuthorize("isAuthenticated()")
+    public Autorizacao buscarAutorizacaoPorNome(String nome) {
         Autorizacao autorizacao = autRepo.findByNome(nome);
-         if(autorizacao!=null){
+        if (autorizacao != null) {
             return autorizacao;
         }
         throw new RegistroNaoEncontradoException("Autorizacao não encontrada!");
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        Usuario usuario = usuarioRepo.findByNome(username);
+        if (usuario == null) {
+            throw new UsernameNotFoundException("Usuario " + username + "nao encontrado");
+        }
+        return User.builder().username(username).password(usuario.getSenha())
+                .authorities(usuario.getAutorizacoes().stream()
+                        .map(Autorizacao::getNome).collect(Collectors.toList())
+                        .toArray(new String[usuario.getAutorizacoes().size()]))
+                .build();
     }
 
 }

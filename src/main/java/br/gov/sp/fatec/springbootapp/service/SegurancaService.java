@@ -2,12 +2,14 @@ package br.gov.sp.fatec.springbootapp.service;
 
 import java.util.List;
 
+import org.springframework.security.core.userdetails.UserDetailsService;
+
 import br.gov.sp.fatec.springbootapp.entity.Autorizacao;
 import br.gov.sp.fatec.springbootapp.entity.Comentario;
 import br.gov.sp.fatec.springbootapp.entity.Livro;
 import br.gov.sp.fatec.springbootapp.entity.Usuario;
 
-public interface SegurancaService {
+public interface SegurancaService extends UserDetailsService {
 
     public Usuario criaUsuario(String nome, String senha, String autorizacao);
 
