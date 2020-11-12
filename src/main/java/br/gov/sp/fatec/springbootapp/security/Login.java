@@ -5,6 +5,7 @@ public class Login {
     private String username;
     private String password;
     private String token;
+    private String autorizacao;
 
     public String getUsername() {
         return username;
@@ -29,5 +30,14 @@ public class Login {
     public void setToken(String token) {
         this.token = token;
     }
+
+    public String getAutorizacao() {
+        return autorizacao;
+    }
+
+    public void setAutorizacao(String autorizacao) {
+        this.autorizacao = autorizacao;
+    }
     
+
 }
